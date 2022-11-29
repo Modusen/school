@@ -1,31 +1,43 @@
 package ru.hogwarts.school.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Faculty {
-    private long id;
+    @Id
+    @GeneratedValue
+    private long idFac;
     private String name;
     private String color;
 
-    public Faculty(long id, String name, String color) {
-        this.id = id;
+    public Faculty(long idFac, String name, String color) {
+        this.idFac = idFac;
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty() {
+
     }
 
     @Override
     public String toString() {
         return "Faculty{" +
-                "id=" + id +
+                "id=" + idFac +
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 '}';
     }
 
-    public long getId() {
-        return id;
+    public long getIdFac() {
+        return idFac;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdFac(long idFac) {
+        this.idFac = idFac;
     }
 
     public String getName() {
