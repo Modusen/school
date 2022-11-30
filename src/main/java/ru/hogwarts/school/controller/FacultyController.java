@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -18,8 +19,12 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public Faculty getFacultyInfo(@PathVariable long id) {
-        return facultyService.findFaculty(id);
+    public ResponseEntity<Faculty> getFacultyInfo(@PathVariable long id) {
+        Faculty foundFaculty = facultyService.findFaculty(id);
+        if (foundFaculty == null){
+            return  ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(foundFaculty);
     }
 
     @PostMapping
@@ -28,8 +33,12 @@ public class FacultyController {
     }
 
     @PutMapping
-    public Faculty editFaculty(@RequestBody Faculty faculty) {
-        return facultyService.editFaculty(faculty);
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
+        if (foundFaculty == null){
+            return  ResponseEntity.notFound().build();
+        }
+            return ResponseEntity.ok(foundFaculty);
     }
 
     @DeleteMapping("{id}")
@@ -38,8 +47,8 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/sort/{color}")
-    public List<Faculty> getFacultySortedList(@PathVariable String color) {
+    @GetMapping("/sort")
+    public List<Faculty> getFacultySortedList(@RequestParam(value = "color") String color) {
         return facultyService.sortFacultyByColor(color);
     }
 }
