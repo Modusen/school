@@ -25,10 +25,10 @@ public class FacultyService {
 
     public Faculty editFaculty(Faculty faculty) {
         Faculty foundFaculty = facultyRepository.findById(faculty.getId()).orElse(null);
-        if (foundFaculty != null){
+        if (foundFaculty != null) {
             return facultyRepository.save(faculty);
         }
-            return null;
+        return null;
     }
 
     public void deleteFaculty(long id) {

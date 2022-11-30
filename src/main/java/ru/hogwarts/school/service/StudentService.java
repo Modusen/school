@@ -26,7 +26,7 @@ public class StudentService {
 
     public Student editStudent(Student student) {
         Student foundStudent = studentRepository.findById(student.getId()).orElse(null);
-        if (foundStudent != null){
+        if (foundStudent != null) {
             return studentRepository.save(student);
         }
         return null;
