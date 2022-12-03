@@ -1,6 +1,5 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -50,5 +49,11 @@ public class FacultyController {
     @GetMapping("/sort")
     public List<Faculty> getFacultySortedList(@RequestParam(value = "color") String color) {
         return facultyService.sortFacultyByColor(color);
+    }
+
+    @GetMapping("/sortBy")
+    public List<Faculty> getFacultySortedByNameAndColorList(@RequestParam(value = "name") String name,
+                                                            @RequestParam(value = "color") String color) {
+        return facultyService.findByNameIgnoreCaseAndColorIgnoreCase(name, color);
     }
 }
