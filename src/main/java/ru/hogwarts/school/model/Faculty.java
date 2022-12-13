@@ -12,9 +12,6 @@ public class Faculty {
     private String name;
     private String color;
 
-    @OneToMany(mappedBy = "faculty")
-    private Collection<Student> students;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

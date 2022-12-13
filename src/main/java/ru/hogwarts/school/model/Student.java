@@ -11,10 +11,16 @@ public class Student {
     private String name;
     private int age;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
+    public Student(String name, int age) {
+
+    }
+
+    public Student() {
+    }
 
     @Override
     public String toString() {
@@ -22,7 +28,12 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", faculty=" + faculty +
                 '}';
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     public long getId() {
@@ -61,4 +72,10 @@ public class Student {
     public int hashCode() {
         return Objects.hash(id, name, age);
     }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+
 }
