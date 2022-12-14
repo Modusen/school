@@ -22,4 +22,10 @@ AND s.name = 'HarryPotter';
 
 SELECT s.name  FROM student as s, faculty as f
 WHERE s.faculty_id = f.id
-AND f.name = 'Griffindor'
+AND f.name = 'Griffindor';
+
+SELECT COUNT(*) FROM student;
+
+SELECT AVG(age) FROM student;
+
+SELECT * FROM student ORDER BY id DESC LIMIT 5;
