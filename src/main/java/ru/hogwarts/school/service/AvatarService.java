@@ -1,9 +1,9 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,18 +13,17 @@ import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 @Transactional
 public class AvatarService {
+    Logger logger = LoggerFactory.getLogger(FacultyService.class);
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
     private final StudentRepository studentRepository;
@@ -36,6 +35,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.warn("Был запущен метод uploadAvatar!!! Из " + this.getClass());
         Student student = studentRepository.getById(studentId);
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
@@ -59,6 +59,7 @@ public class AvatarService {
     }
 
     public ResponseEntity<Collection<Avatar>> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        logger.warn("Был запущен метод getAllAvatars!!! Из " + this.getClass());
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         Collection<Avatar> avatarList = avatarRepository.findAll(pageRequest).getContent();
         if (avatarList.isEmpty()){
@@ -67,10 +68,12 @@ public class AvatarService {
         return ResponseEntity.ok(avatarList);
     }
     public Avatar findAvatar(Long studentId) {
+        logger.warn("Был запущен метод findAvatar!!! Из " + this.getClass());
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtensions(String fileName) {
+        logger.warn("Был запущен метод getExtensions!!! Из " + this.getClass());
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 }

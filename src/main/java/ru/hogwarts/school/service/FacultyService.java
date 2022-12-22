@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Service
 public class FacultyService {
+    Logger logger = LoggerFactory.getLogger(FacultyService.class);
     private final FacultyRepository facultyRepository;
     private final StudentRepository studentRepository;
 
@@ -21,14 +24,17 @@ public class FacultyService {
 
 
     public Faculty addFaculty(Faculty faculty) {
+        logger.warn("Был запущен метод addFaculty!!! Из " + this.getClass());
         return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(long id) {
+        logger.warn("Был запущен метод findFaculty!!!");
         return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty editFaculty(Faculty faculty) {
+        logger.warn("Был запущен метод editFaculty!!!");
         Faculty foundFaculty = facultyRepository.findById(faculty.getId()).orElse(null);
         if (foundFaculty != null) {
             return facultyRepository.save(faculty);
@@ -37,17 +43,21 @@ public class FacultyService {
     }
 
     public void deleteFaculty(long id) {
+        logger.warn("Был запущен метод deleteFaculty!!!");
         facultyRepository.deleteById(id);
     }
 
     public List<Faculty> sortFacultyByColor(String color) {
+        logger.warn("Был запущен метод sortFacultyByColor!!!");
         return facultyRepository.findByColor(color);
     }
     public List<Faculty> findByNameIgnoreCaseAndColorIgnoreCase(String name, String color){
+        logger.warn("Был запущен метод findByNameIgnoreCaseAndColorIgnoreCase!!!");
         return facultyRepository.findByNameIgnoreCaseAndColorIgnoreCase(name, color);
     }
 
     public Collection<Student> getStudentByFaculty(long id) {
+        logger.warn("Был запущен метод getStudentByFaculty!!!");
         return studentRepository.findAllByFaculty_Id(id);
     }
 }
