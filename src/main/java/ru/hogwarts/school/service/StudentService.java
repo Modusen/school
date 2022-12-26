@@ -8,6 +8,8 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -62,7 +64,8 @@ public class StudentService {
         logger.warn("Запущен метод getFacultyByStudent!!!");
         return findStudent(id).getFaculty();
     }
-    public Long overallStudentAmount(){
+
+    public Long overallStudentAmount() {
         logger.warn("Запущен метод overallStudentAmount!!!");
         return studentRepository.overallStudentAmount();
     }
@@ -71,8 +74,36 @@ public class StudentService {
         logger.warn("Запущен метод getAverageStudentAge!!!");
         return studentRepository.getAverageStudentAge();
     }
+
+    public double anotherGetAverageStudentAge() {
+        return studentRepository.findAll().stream()
+                .mapToInt(student->student.getAge())
+                .average()
+                .orElse(0);
+    }
+
     public List<Student> getLastFiveStudentsByID() {
         logger.warn("Запущен метод getLastFiveStudentsByID!!!");
         return studentRepository.getLastFiveStudentsByID();
+    }
+
+    public List<String> getAllNamesStartsWithA() {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .filter(i -> i.startsWith("A"))
+                .sorted((s1,s2) -> s1.compareTo(s2))
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+    }
+
+    public double countMethod() {
+        double start = System.currentTimeMillis();
+        int result = Stream.iterate(1, a -> a +1).limit(1_000_000_00)
+                .parallel()
+                .reduce(0, (a, b) -> a + b );
+        double finish = System.currentTimeMillis();
+        double timeResult = finish-start;
+        return  timeResult;
     }
 }

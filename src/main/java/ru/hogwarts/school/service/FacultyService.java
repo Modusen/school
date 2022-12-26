@@ -9,7 +9,9 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -59,5 +61,11 @@ public class FacultyService {
     public Collection<Student> getStudentByFaculty(long id) {
         logger.warn("Был запущен метод getStudentByFaculty!!!");
         return studentRepository.findAllByFaculty_Id(id);
+    }
+    public Optional<String> getLongestFacultyName(){
+        return facultyRepository.findAll()
+                .stream()
+                .map(f->f.getName())
+                .max(Comparator.comparingInt(String::length));
     }
 }
