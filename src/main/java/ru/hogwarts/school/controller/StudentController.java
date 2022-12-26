@@ -77,8 +77,21 @@ public class StudentController {
     public Long getAverageStudentAge(){
         return studentService.getAverageStudentAge();
     }
+    @GetMapping("/anotherGetAverageStudentAge")
+    public Long anotherGetAverageStudentAge(){
+        return studentService.getAverageStudentAge();
+    }
     @GetMapping("/lastfivestudents")
     public List<Student> getLastFiveStudentsByID() {
         return studentService.getLastFiveStudentsByID();
+    }
+    @GetMapping("/getAllNamesStartsWithA")
+    public ResponseEntity<List<String>> getAllNamesStartsWithA(){
+        return ResponseEntity.ok(studentService.getAllNamesStartsWithA());
+    }
+
+    @GetMapping("/counStuff")
+    public double countMethod(){
+        return studentService.countMethod();
     }
 }
