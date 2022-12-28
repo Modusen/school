@@ -17,6 +17,7 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+
     @GetMapping
     public ResponseEntity<List<Student>> getStudentInfo() {
         List<Student> foundStudent = studentService.findAll();
@@ -65,33 +66,48 @@ public class StudentController {
                                                         @RequestParam(value = "max") int max) {
         return studentService.findByAgeBetween(min, max);
     }
+
     @GetMapping("/{id}/faculty")
-    public Faculty getFacultyByStudent(@PathVariable long id){
+    public Faculty getFacultyByStudent(@PathVariable long id) {
         return studentService.getFacultyByStudent(id);
     }
+
     @GetMapping("/overall")
-    public Long overallStudentAmount(){
+    public Long overallStudentAmount() {
         return studentService.overallStudentAmount();
     }
+
     @GetMapping("/averagestudentage")
-    public Long getAverageStudentAge(){
+    public Long getAverageStudentAge() {
         return studentService.getAverageStudentAge();
     }
+
     @GetMapping("/anotherGetAverageStudentAge")
-    public Long anotherGetAverageStudentAge(){
+    public Long anotherGetAverageStudentAge() {
         return studentService.getAverageStudentAge();
     }
+
     @GetMapping("/lastfivestudents")
     public List<Student> getLastFiveStudentsByID() {
         return studentService.getLastFiveStudentsByID();
     }
+
     @GetMapping("/getAllNamesStartsWithA")
-    public ResponseEntity<List<String>> getAllNamesStartsWithA(){
+    public ResponseEntity<List<String>> getAllNamesStartsWithA() {
         return ResponseEntity.ok(studentService.getAllNamesStartsWithA());
     }
 
-    @GetMapping("/counStuff")
-    public double countMethod(){
+    @GetMapping("/countStuff")
+    public double countMethod() {
         return studentService.countMethod();
+    }
+
+    @GetMapping("/threading")
+    public void threadingTestMethod(){
+        studentService.threadingTestMethod();
+    }
+    @GetMapping("/threadingSync")
+    public void synchronizedThreadingTestMethod(){
+        studentService.synchronizedThreadingTestMethod();
     }
 }

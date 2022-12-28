@@ -13,7 +13,8 @@ import java.util.stream.Stream;
 
 @Service
 public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    public static int counter = 0;
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
@@ -77,7 +78,7 @@ public class StudentService {
 
     public double anotherGetAverageStudentAge() {
         return studentRepository.findAll().stream()
-                .mapToInt(student->student.getAge())
+                .mapToInt(student -> student.getAge())
                 .average()
                 .orElse(0);
     }
@@ -92,18 +93,57 @@ public class StudentService {
                 .stream()
                 .map(Student::getName)
                 .filter(i -> i.startsWith("A"))
-                .sorted((s1,s2) -> s1.compareTo(s2))
+                .sorted((s1, s2) -> s1.compareTo(s2))
                 .map(String::toUpperCase)
                 .collect(Collectors.toList());
     }
 
     public double countMethod() {
         double start = System.currentTimeMillis();
-        int result = Stream.iterate(1, a -> a +1).limit(1_000_000_00)
+        int result = Stream.iterate(1, a -> a + 1).limit(1_000_000_00)
                 .parallel()
-                .reduce(0, (a, b) -> a + b );
+                .reduce(0, (a, b) -> a + b);
         double finish = System.currentTimeMillis();
-        double timeResult = finish-start;
-        return  timeResult;
+        return finish - start;
+    }
+
+    public void threadingTestMethod() {
+        List<Student> allStudents = studentRepository.findAll();
+        System.out.println(allStudents.get(0));
+        System.out.println(allStudents.get(1));
+
+        new Thread(() -> {
+            System.out.println(allStudents.get(2));
+            System.out.println(allStudents.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(allStudents.get(4));
+            System.out.println(allStudents.get(5));
+        }).start();
+    }
+
+    public void synchronizedThreadingTestMethod() {
+        List<Student> allStudents = studentRepository.findAll();
+        printName(0);
+        printName(1);
+
+
+        new Thread(() -> {
+            printName(2);
+            printName(3);
+        }).start();
+
+        new Thread(() -> {
+            printName(4);
+            printName(5);
+        }).start();
+    }
+
+    public void printName(int id) {
+        synchronized (StudentService.class) {
+            System.out.println(studentRepository.findAll().get(id));
+            counter++;
+        }
     }
 }
